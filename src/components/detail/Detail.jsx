@@ -9,8 +9,15 @@ const Detail = () => {
         <h2>Jane Doe</h2>
         <p>Lorem ipsum dolor sit amet.</p>
       </div>
+
       <div className="info">
 
+        <div className="option">
+          <div className="title">
+            <span>Chat Settings</span>
+            <img src="/arrowUp.png" alt="" />
+          </div> 
+        </div>
         <div className="option">
           <div className="title">
             <span>Chat Settings</span>
@@ -66,6 +73,7 @@ const Detail = () => {
           </div> 
         </div>
         <button>Block User</button>
+        <button className='logOut'>LogOut</button>
       </div>
     </div>
   )
