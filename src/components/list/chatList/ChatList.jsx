@@ -23,35 +23,35 @@ const ChatList = () => {
             <img src="./avatar.png" alt="chatImg" />
             <div className="texts">
                 <span>Hardik Parmar</span>
-                <p>Hello</p>
+                <p>Lorem ipsum dolor sit.</p>
             </div>
         </div>
         <div className="item">
             <img src="./avatar.png" alt="chatImg" />
             <div className="texts">
-                <span>Hardik Parmar</span>
-                <p>Hello</p>
+                <span>Jay Barad</span>
+                <p>amet consectetur adipisicing elit.</p>
             </div>
         </div>
         <div className="item">
             <img src="./avatar.png" alt="chatImg" />
             <div className="texts">
-                <span>Hardik Parmar</span>
-                <p>Hello</p>
+                <span>Krish Kanj</span>
+                <p>elit. Autem, aliquid.</p>
             </div>
         </div>
         <div className="item">
             <img src="./avatar.png" alt="chatImg" />
             <div className="texts">
-                <span>Hardik Parmar</span>
-                <p>Hello</p>
+                <span>Rohit</span>
+                <p>nemo natus nostrum,  repudiandae.</p>
             </div>
         </div>
         <div className="item">
             <img src="./avatar.png" alt="chatImg" />
             <div className="texts">
-                <span>Hardik Parmar</span>
-                <p>Hello</p>
+                <span>Surru Bhai</span>
+                <p>eveniet optio dolore molestias itaque.</p>
             </div>
         </div>
 
