@@ -13,12 +13,12 @@ const App = () => {
   const {currentUser, isLoading, fetchUserInfo} = useUserStore();
   
   useEffect(() => {
-    const unSub = onAuthStateChanged(auth, (user) => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
       fetchUserInfo(user.uid);
     });
   
     return () => {
-      unSub();
+      unSubscribe();
     };
 
   }, [fetchUserInfo]);
