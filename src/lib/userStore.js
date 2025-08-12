@@ -1,6 +1,6 @@
 import { doc } from "firebase/firestore";
 import { create } from "zustand";
-import { db } from "./lib/firebase";
+import { db } from "./firebase";
 import { getDoc } from "firebase/firestore";
 
 

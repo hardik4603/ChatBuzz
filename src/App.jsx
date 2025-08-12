@@ -6,7 +6,7 @@ import Login from "./components/login/Login.jsx";
 import { Toaster } from "react-hot-toast";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./lib/firebase.js";
-import { useUserStore } from "./userStore.js";
+import { useUserStore } from "./lib/userStore.js";
 
 const App = () => {
 
@@ -14,7 +14,7 @@ const App = () => {
   
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
-      fetchUserInfo(user.uid);
+      fetchUserInfo(user?.uid);
     });
   
     return () => {
