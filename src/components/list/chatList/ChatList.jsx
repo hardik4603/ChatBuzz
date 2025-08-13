@@ -1,9 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './chatList.css'
 import AddUser from './addUser/AddUser.jsx'
+import { useUserStore } from '../../../lib/userStore.js';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../lib/firebase.js';
+
 
 const ChatList = () => {
     const [adding, setAdding] = useState(false);
+    const [chats, setChats] = useState([]);
+    const {currentUser} = useUserStore();
+    
+    useEffect(() => {
+      const unSub = onSnapshot(doc(db,"userChats", currentUser.id),(doc)=>{
+        setChats(doc.data());
+      })
+    
+      return () => {
+        unSub();
+      }
+    }, [currentUser.id])
+    console.log(chats);
+
   return (
     <div className='chatList'>
 
@@ -26,34 +44,7 @@ const ChatList = () => {
                 <p>Lorem ipsum dolor sit.</p>
             </div>
         </div>
-        <div className="item">
-            <img src="./avatar.png" alt="chatImg" />
-            <div className="texts">
-                <span>Jay Barad</span>
-                <p>amet consectetur adipisicing elit.</p>
-            </div>
-        </div>
-        <div className="item">
-            <img src="./avatar.png" alt="chatImg" />
-            <div className="texts">
-                <span>Krish Kanj</span>
-                <p>elit. Autem, aliquid.</p>
-            </div>
-        </div>
-        <div className="item">
-            <img src="./avatar.png" alt="chatImg" />
-            <div className="texts">
-                <span>Rohit</span>
-                <p>nemo natus nostrum,  repudiandae.</p>
-            </div>
-        </div>
-        <div className="item">
-            <img src="./avatar.png" alt="chatImg" />
-            <div className="texts">
-                <span>Surru Bhai</span>
-                <p>eveniet optio dolore molestias itaque.</p>
-            </div>
-        </div>
+        
 
         {adding && <AddUser/>}
     </div>
