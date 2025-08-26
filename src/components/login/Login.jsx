@@ -12,7 +12,7 @@ const Login = () => {
 
     const [avatar, setAvatar] = useState({
         file : null,
-        url : ""
+        url : "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const Login = () => {
         await setDoc(doc(db, "users", res.user.uid),{
           username,
           email,
-          
+
           id: res.user.uid,
           blocked: [],
           avatar : imgUrl,
