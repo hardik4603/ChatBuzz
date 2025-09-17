@@ -49,6 +49,8 @@ const Login = () => {
         });
 
         await setDoc(doc(db, "userChats", res.user.uid),{
+          // for every user there is an array called chats and every element inside the chats array 
+          // represents another user with which a user is a part of in chat
           chats: [],
         });
 

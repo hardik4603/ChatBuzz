@@ -16,6 +16,7 @@ const ChatList = () => {
       // setChats(doc.data());
       const items = res.data().chats;
 
+      // this promise is run to just add user in every item of arr
       const promises = items.map(async(item)=>{
 
 
@@ -27,6 +28,7 @@ const ChatList = () => {
         return { ...item, user};
         
       });
+      // So here single items has all info related to a chat and also user info is embedded in it
 
       const chatData = await Promise.all(promises);
       setChats(chatData.sort((a,b)=> b.updatedAt - a.updatedAt));
@@ -55,9 +57,9 @@ const ChatList = () => {
       {/* ChatLists */}
       {chats.map((chat) => (
         <div className="item" key={chat.chatId}>
-          <img src="./avatar.png" alt="chatImg" />
+          <img src={chat.user.avatar || "./avatar.png"} alt="chatImg" />
           <div className="texts">
-            <span>Hardik Parmar</span>
+            <span>{chat.user.username}</span>
             <p>{chat.lastMessage}</p>
           </div>
         </div>
