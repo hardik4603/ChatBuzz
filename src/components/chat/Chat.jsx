@@ -1,23 +1,62 @@
+
+
+
+
+
+// HandleSend se baaki hai
+
+
+
+
+
+
 import EmojiPicker from 'emoji-picker-react'
 import './chat.css'
 import React, { useState, useRef, useEffect } from 'react'
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+import { useChatStore } from '../../lib/chatStore';
 
 const Chat = () => {
-  const[open, setOpen] = useState(false);
-  const[text, setText] = useState("");
-  const endRef=useRef(null);
+  const [open, setOpen] = useState(false);
+  const [chat, setChat] = useState();
+  const [text, setText] = useState("");
+  const endRef = useRef(null);
+
+  const { chatId } = useChatStore();
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({behavior:'smooth'});
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [])
-  
 
-  function handleEmojiClick(e){
-    setText((prev)=>prev+e.emoji);
-    setOpen(false);  
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, 'chats', chatId), (res) => {
+      setChat(res.data());
+    });
+
+    return () => {
+      unSub();
+    }
+  }, [chatId])
+
+
+  const handleSend = async ()=> {
+    if(text === "") return;
+
+    try{
+
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
-  
+  function handleEmojiClick(e) {
+    setText((prev) => prev + e.emoji);
+    setOpen(false);
+  }
+
+
 
   return (
     <div className='chat'>
@@ -37,59 +76,17 @@ const Chat = () => {
       </div>
 
       <div className="center">
-        <div className="message">
-          <img src="./avatar.png" />
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
+
+        {chat?.messages?.map((message) => (
+
+          <div className="message own" key={message?.createdAt}>
+            <div className="texts">
+              {message.img && <img src={message.img} alt="" />}
+              <p>{message.text}</p>
+              <span>1 min ago</span>
+            </div>
           </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" />
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" />
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message">
-          <img src="./avatar.png" />
-          <div className="texts">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>
-        <div className="message own">
-          <div className="texts">
-            <img src="./bg-img.jpg" alt="" />
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, optio. Ducimus hic excepturi quae sequi tempora nobis deserunt nihil inventore esse commodi dolores accusantium exercitationem laborum delectus, cumque fuga ullam!</p>
-            <span>1 min ago</span>
-          </div>
-        </div>    
+        ))}
 
         <div className='end' ref={endRef}></div>
 
@@ -101,16 +98,16 @@ const Chat = () => {
           <img src="./camera.png" alt="" />
           <img src="./mic.png" alt="" />
         </div>
-        <input type="text" placeholder='Type a message' value={text} onChange={(e)=>setText(e.target.value)}/>
+        <input type="text" placeholder='Type a message' value={text} onChange={(e) => setText(e.target.value)} />
         <div className="emoji">
           <img src="./emoji.png"
-            onClick={()=>setOpen((prev)=>!prev)}
+            onClick={() => setOpen((prev) => !prev)}
           />
           <div className="picker">
-            <EmojiPicker open={open} onEmojiClick={handleEmojiClick}/>
+            <EmojiPicker open={open} onEmojiClick={handleEmojiClick} />
           </div>
         </div>
-        <button>Send</button>
+        <button onClick={handleSend}>Send</button>
       </div>
 
     </div>

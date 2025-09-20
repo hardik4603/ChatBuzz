@@ -2,14 +2,23 @@ import React, { useState, useEffect } from 'react'
 import './chatList.css'
 import AddUser from './addUser/AddUser.jsx'
 import { useUserStore } from '../../../lib/userStore.js';
+import { useChatStore } from '../../../lib/chatStore.js';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../lib/firebase.js';
+
 
 
 const ChatList = () => {
   const [adding, setAdding] = useState(false);
   const [chats, setChats] = useState([]);
   const { currentUser } = useUserStore();
+  const {chatId, changeChat} = useChatStore();
+
+  // So basically Chats array's every ele has an object 
+  // {chatId, lastMessage, recieverId, updatedAt, user:{avatar, email, blocked, id, username}}
+
+
+
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "userChats", currentUser.id), async(res) => {
@@ -40,6 +49,12 @@ const ChatList = () => {
   }, [currentUser.id]);
   // console.log(chats);
 
+
+  const handleSelect = async (chat)=>{
+    changeChat(chat.chatId, chat.user)
+  }
+
+
   return (
     <div className='chatList'>
 
@@ -56,7 +71,7 @@ const ChatList = () => {
 
       {/* ChatLists */}
       {chats.map((chat) => (
-        <div className="item" key={chat.chatId}>
+        <div className="item" key={chat.chatId} onClick={()=>{handleSelect(chat)}}>
           <img src={chat.user.avatar || "./avatar.png"} alt="chatImg" />
           <div className="texts">
             <span>{chat.user.username}</span>
