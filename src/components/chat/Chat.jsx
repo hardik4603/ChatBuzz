@@ -1,21 +1,10 @@
-
-
-
-
-
-// HandleSend se baaki hai
-
-
-
-
-
-
 import EmojiPicker from 'emoji-picker-react'
 import './chat.css'
 import React, { useState, useRef, useEffect } from 'react'
-import { doc, onSnapshot } from 'firebase/firestore';
+import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { useChatStore } from '../../lib/chatStore';
+import { useUserStore } from '../../lib/userStore';
 
 const Chat = () => {
   const [open, setOpen] = useState(false);
@@ -23,7 +12,8 @@ const Chat = () => {
   const [text, setText] = useState("");
   const endRef = useRef(null);
 
-  const { chatId } = useChatStore();
+  const { chatId, user } = useChatStore();
+  const { currentUser } = useUserStore();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -40,13 +30,44 @@ const Chat = () => {
   }, [chatId])
 
 
-  const handleSend = async ()=> {
-    if(text === "") return;
+  const handleSend = async () => {
+    if (text === "") return;
 
-    try{
+    try {
+
+      await updateDoc(doc(db, "chats", chatId), {
+        messages: arrayUnion({
+          senderId: currentUser.id,
+          text,
+          createdAt: new Date(),
+        }),
+      });
+
+      const userIDs = [currentUser.id, user.id];
+      userIDs.forEach(async (id, idx) => {
+
+        const userChatsRef = doc(db, "userChats", id);
+        const userChatsSnapshot = await getDoc(userChatsRef);
+
+        if (userChatsSnapshot.exists()) {
+          const userChatsData = userChatsSnapshot.data();
+
+          const chatIndex = userChatsData.chats.findIndex((c) => c.chatId === chatId);
+
+          userChatsData.chats[chatIndex].lastMessage = text;
+          userChatsData.chats[chatIndex].isSeen = idx===1 ? false : true;
+          userChatsData.chats[chatIndex].updatedAt = Date.now();
+
+          await updateDoc(userChatsRef, {
+            chats: userChatsData.chats,
+          });
+        }
+
+      })
+
 
     }
-    catch(err){
+    catch (err) {
       console.log(err);
     }
   }
@@ -79,7 +100,7 @@ const Chat = () => {
 
         {chat?.messages?.map((message) => (
 
-          <div className="message own" key={message?.createdAt}>
+          <div className={(message.senderId === currentUser.id) ? "message own" : "message"} key={message?.createdAt}>
             <div className="texts">
               {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
