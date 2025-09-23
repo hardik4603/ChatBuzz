@@ -11,11 +11,15 @@ import { db } from '../../../lib/firebase.js';
 const ChatList = () => {
   const [adding, setAdding] = useState(false);
   const [chats, setChats] = useState([]);
+  const [input, setInput] = useState("");
+
   const { currentUser } = useUserStore();
   const {chatId, changeChat} = useChatStore();
 
   // So basically Chats array's every ele has an object 
   // {chatId, lastMessage, recieverId, updatedAt, user:{avatar, email, blocked, id, username}}
+
+  const filteredChats = chats.filter((c)=> c.user.username.toLowerCase().includes(input.toLowerCase()));
 
 
 
@@ -83,7 +87,7 @@ const ChatList = () => {
       <div className="search">
         <div className="searchBar">
           <img src="./search.png" alt="search-btn" />
-          <input placeholder='Search..' type="text" />
+          <input placeholder='Search..' type="text" onChange={(e)=>setInput(e.target.value)}/>
         </div>
         <img onClick={() => setAdding((prev) => !prev)}
           className='add' src={adding ? "./minus.png" : "./plus.png"} alt="add-btn"
@@ -91,7 +95,7 @@ const ChatList = () => {
       </div>
 
       {/* ChatLists */}
-      {chats.map((chat) => (
+      {filteredChats.map((chat) => (
         <div className="item" key={chat.chatId} onClick={()=>{handleSelect(chat)}} style={{backgroundColor: chat.isSeen? "transparent": "#5183fe"}}>
           <img src={chat.user.avatar || "./avatar.png"} alt="chatImg" />
           <div className="texts">
