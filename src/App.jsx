@@ -1,4 +1,4 @@
-import {React, useEffect} from "react"
+import {React, useEffect, useState} from "react"
 import Detail from './components/detail/Detail.jsx';
 import List from './components/list/List.jsx';
 import Chat from './components/chat/Chat.jsx';
@@ -13,6 +13,7 @@ const App = () => {
 
   const {currentUser, isLoading, fetchUserInfo} = useUserStore();
   const {chatId} = useChatStore();
+  const [showDetail, setShowDetail] = useState(false);
   
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (user) => {
@@ -35,8 +36,8 @@ const App = () => {
         (currentUser)? (
           <>
             <List />
-            {chatId && <Chat />}
-            {chatId && <Detail />}
+            {chatId && <Chat setShowDetail={setShowDetail}/>}
+            {chatId && showDetail && <Detail setShowDetail={setShowDetail}/>}
           </>
         ):(
           <Login/>

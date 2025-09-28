@@ -5,17 +5,22 @@ import './login.css'
 import toast from 'react-hot-toast';
 import { doc, setDoc } from 'firebase/firestore';
 import upload from '../../lib/upload';
-import { signInWithEmailAndPassword } from 'firebase/auth/web-extension';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useUserStore } from '../../lib/userStore';
 
 
 const Login = () => {
+
+
 
     const [avatar, setAvatar] = useState({
         file : null,
         url : "",
     });
+    const [showLogin, setShowLogin] = useState(true);
 
     const [loading, setLoading] = useState(false);
+    const { fetchUserInfo } = useUserStore();
 
     function handleAvatar(e){
         if(e.target.files[0]){
@@ -37,7 +42,10 @@ const Login = () => {
 
         const res = await createUserWithEmailAndPassword(auth, email, password);
         
-        const imgUrl = await upload(avatar.file);
+        const imgUrl = 'avatar.png';
+        if(avatar.file){
+          imgUrl = await upload(avatar.file);
+        }
 
         await setDoc(doc(db, "users", res.user.uid),{
           username,
@@ -53,8 +61,10 @@ const Login = () => {
           // represents another user with which a user is a part of in chat
           chats: [],
         });
+        
+        await fetchUserInfo(res.user.uid);
 
-        toast.success("Account created! You can login now");
+        toast.success("Account created! You are logged in");
 
       }
       catch(e){
@@ -79,7 +89,7 @@ const Login = () => {
         }
         catch(err){
           console.log(err);
-          toast.error(ere.message);
+          toast.error(err.message);
         }
         finally{
           setLoading(false);
@@ -89,18 +99,28 @@ const Login = () => {
   return (
     <div className='login'>
 
-      <div className="item">
+      {/* <h1 className='app-name'><span>Chat</span>Buzz</h1>  */}
+      <h1 className='app-name'>
+        {'ChatBuzz'.split('').map((letter, idx) => (
+          <span key={idx}>{letter}</span>
+        ))}
+      </h1> 
+
+
+
+      {showLogin && <div className="item">
         <h2>Welcome back</h2>
         <form onSubmit={handleLogin}>
             <input type="email" name="email" placeholder='Email' />
             <input type="password" name="password" placeholder='Password' />
             <button disabled={loading}>{(loading)? 'loading':'Sign In'}</button>
+            <span className='change-Auth'>New customer?  <span onClick={()=> setShowLogin(!showLogin)}>Sign Up</span></span>
         </form>
-      </div>
+      </div>}
 
-      <div className="separator"></div>
+      {/* <div className="separator"></div> */}
 
-      <div className="item">
+      {!showLogin && <div className="item">
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
             <label htmlFor="avatar-file">
@@ -112,8 +132,9 @@ const Login = () => {
             <input type="email" name="email" placeholder='Email' />
             <input type="password" name="password" placeholder='Password' />
             <button disabled={loading}>{(loading)? 'loading':'Sign Up'}</button>
+            <span className='change-Auth'>Already a customer?  <span onClick={()=> setShowLogin(!showLogin)}>Sign In</span></span>
         </form>
-      </div>
+      </div>}
 
     </div>
   )

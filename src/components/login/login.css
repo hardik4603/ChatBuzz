@@ -1,33 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
+
 .login{
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 100px;
+    position: relative;
+    justify-content: center;
 
-    .separator{
+   
+    
+    
+
+    /* .separator{
         width: 2px;
         height: 80%;
         background: #dddddd35;
         border-radius: 20px;
-    }
+    } */
+
+    /* .app-name{
+        position: absolute;
+        top: 2rem;
+        
+    } */
+
+   
 
     .item{
         flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px;
+        gap: 1.5rem;
 
         form{
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 1.2rem;
 
             input{
-                padding: 20px;
+                padding: 1rem;
                 border: none;
                 outline: none;
                 background-color: rgba(17, 25, 40, 0.6);
@@ -41,11 +56,12 @@
                 align-items: center;
                 justify-content: space-between;
                 cursor: pointer;
+                font-size: medium;
                 text-decoration: underline;
 
                 img{
-                    width: 50px;
-                    height: 50px;
+                    width: 3rem;
+                    height: 3rem;
                     object-fit: cover;
                     border-radius: 10px;
                     opacity: 0.7;
@@ -54,20 +70,77 @@
 
             button{
                 width: 100%;
-                padding: 20px;
+                padding: 0.8rem;
                 border: none;
                 background-color: #1f8ef1;
                 color: white;
                 border-radius: 5px;
                 cursor: pointer;
                 font-weight: 500;
-
                 &:disabled{
                     cursor: not-allowed;
                     background-color: #1f8ff19f;
                 }
             }
+
+            .change-Auth{
+                font-size:small;
+
+
+                span{
+                    background-color: #117edd;
+                    color: white;
+                    padding: 0.2rem;
+                    border-radius: 5px;
+                    font-size: small;
+                    cursor: pointer;
+                }
+            }
+
+
+
         }
+
+
+
     }
 
 }
+
+
+
+.app-name {
+    position: absolute;
+    top: 2rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 3px 3px 4px gray;
+  }
+  
+  .app-name span {
+    display: inline-block;
+    color: #F3E5AB; /* A deep, slate-blue color */
+    position: relative;
+    cursor: pointer;
+    transition: color 0.4s ease;
+  }
+  
+  .app-name span:hover {
+    color: #FFC107; /* Change to your primary color on hover */
+    animation: bounce 0.6s ease;
+  }
+  
+  /* Keyframes for the bounce animation */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }

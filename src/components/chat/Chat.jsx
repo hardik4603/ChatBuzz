@@ -7,7 +7,7 @@ import { useChatStore } from '../../lib/chatStore';
 import { useUserStore } from '../../lib/userStore';
 import upload from '../../lib/upload';
 
-const Chat = () => {
+const Chat = ({setShowDetail}) => {
   const [open, setOpen] = useState(false);
   const [chat, setChat] = useState();
   const [text, setText] = useState("");
@@ -16,6 +16,7 @@ const Chat = () => {
     url: "",
   })
 
+
   const endRef = useRef(null);
 
   const { chatId, user, isCurrentUserBlocked, isRecieverBlocked } = useChatStore();
@@ -23,7 +24,7 @@ const Chat = () => {
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [])
+  }, [chat])
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, 'chats', chatId), (res) => {
@@ -35,8 +36,8 @@ const Chat = () => {
     }
   }, [chatId]);
 
-  const handleImg = (e)=>{
-    if(e.target.files[0]){
+  const handleImg = (e) => {
+    if (e.target.files[0]) {
       setImg({
         file: e.target.files[0],
         url: URL.createObjectURL(e.target.files[0]),
@@ -52,7 +53,7 @@ const Chat = () => {
 
     try {
 
-      if(img.file){
+      if (img.file) {
         imgURL = await upload(img.file);
       }
 
@@ -61,7 +62,7 @@ const Chat = () => {
           senderId: currentUser.id,
           text,
           createdAt: new Date(),
-          ...(imgURL && {img : imgURL}),
+          ...(imgURL && { img: imgURL }),
         }),
       });
 
@@ -77,7 +78,7 @@ const Chat = () => {
           const chatIndex = userChatsData.chats.findIndex((c) => c.chatId === chatId);
 
           userChatsData.chats[chatIndex].lastMessage = text;
-          userChatsData.chats[chatIndex].isSeen = idx===1 ? false : true;
+          userChatsData.chats[chatIndex].isSeen = idx === 1 ? false : true;
           userChatsData.chats[chatIndex].updatedAt = Date.now();
 
           await updateDoc(userChatsRef, {
@@ -110,17 +111,17 @@ const Chat = () => {
   return (
     <div className='chat'>
       <div className="top">
-        <div className="user">
+        <div className="user" onClick={()=>setShowDetail(true)}>
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
-            <p>Lorem ipsum dolor sit amet. lorem30</p>
+            <p>click here for contact info</p>
           </div>
         </div>
         <div className='icons'>
           <img src="./phone.png" alt="" />
           <img src="./camera.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src="./info.png" alt="" onClick={()=>setShowDetail(true)}/>
         </div>
       </div>
 
@@ -132,7 +133,7 @@ const Chat = () => {
             <div className="texts">
               {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
-              <span>1 min ago</span>
+              <span>few mins ago</span>
             </div>
           </div>
         ))}
@@ -149,15 +150,19 @@ const Chat = () => {
 
       <div className="bottom">
         <div className="icons">
-          <img src="./img.png" alt="" />
-          <label htmlFor="imgFile">
-            <img src="./camera.png" alt="" />
-          </label>
-          <input type="file" id='imgFile' style={{display: 'none'}} onChange={handleImg}/>
-          <img src="./mic.png" alt="" />
+          {/* <img src="./img.png" alt="" /> */}
+          <span className='AI' onClick={()=>setText('@askAI  ')}>Ai</span>
+          <div className="file-upload">
+            <label htmlFor="imgFile">
+              <img className='input-img' src="./camera.png" alt=""  />
+              <span className='only-img-div'>only images</span>
+            </label>
+            <input type="file" id='imgFile' style={{ display: 'none' }} onChange={handleImg} />
+          </div>
+          {/* <img src="./mic.png" alt="" /> */}
         </div>
-        <input type="text" placeholder='Type a message' value={text} onChange={(e) => setText(e.target.value)} 
-         disabled={isCurrentUserBlocked || isRecieverBlocked}/>
+        <input type="text" placeholder='Type a message' value={text} onChange={(e) => setText(e.target.value)}
+          disabled={isCurrentUserBlocked || isRecieverBlocked} />
         <div className="emoji">
           <img src="./emoji.png"
             onClick={() => setOpen((prev) => !prev)}

@@ -9,19 +9,20 @@
 
     .top{
         display: flex;
-        padding: 20px;
+        padding: 0.8rem;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #dddddd35;
 
         .user{
             display: flex;
-            gap: 20px;
+            gap: 1rem;
             align-items: center;
+            cursor: pointer;
 
             img{
-                width: 60px;
-                height: 60px;
+                width: 2.5rem;
+                height: 2.5rem;
                 border-radius: 50%;
                 object-fit: cover;
             }
@@ -29,28 +30,28 @@
             .texts{
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 0.3rem;
 
                 span{
-                    font-size: 18px;
+                    font-size: 1.1rem;
                     font-weight: bold;
                 }
 
                 p{
                     font-weight: 300;
-                    font-size: 14px;
-                    color: #a5a5a5;
+                    font-size: 0.64rem;
+                    color: #a5a5a5b0;
                 }
             }
         }
 
         .icons{
             display: flex;
-            gap: 20px;
+            gap: 1.2rem;
 
             img{
-                height: 20px;
-                width: 20px;
+                height: 1.1rem;
+                width: 1.1rem;
                 cursor: pointer;
             }
         }
@@ -59,15 +60,15 @@
 
     .center{
         flex: 1;
-        padding: 20px;
+        padding: 0.6rem;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 1rem;
         overflow: scroll;
 
         img{
-            height: 30px;
-            width: 30px;
+            height: 2rem;
+            width: 2rem;
             border-radius: 50%;
             object-fit: cover;
         }
@@ -76,21 +77,22 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 0.2rem;
 
             p{
-                padding: 20px;
+                padding: 0.8rem;
                 background-color: rgba(17, 25, 40, 0.3);
                 border-radius: 10px;
+                font-size: 1rem;
             }
 
             span{
-                font-size: 13px;
+                font-size: 0.7rem;
             }
 
             img{
                 width: 100%;
-                height: 300px;
+                height: 30vh;
                 border-radius: 10px;
                 object-fit: cover;
             }
@@ -100,6 +102,7 @@
             max-width: 70%;
             display: flex;
             gap: 20px;
+            align-self: flex-start;
 
 
             &.own{
@@ -115,8 +118,8 @@
     }
 
     .bottom{
-        gap: 20px;
-        padding: 20px;
+        gap: 1rem;
+        padding: 0.7rem;
         display: flex;
         align-items:center;
         justify-content: space-between;
@@ -124,26 +127,49 @@
         margin-top: auto;
 
         img{
-            height: 20px;
-            width: 20px;
+            height: 1rem;
+            width: 1rem;
             cursor: pointer;
         }
 
         .icons{
             display: flex;
-            gap: 20px;
+            gap: 1.3rem;
+            align-items: center;
             /* cursor: pointer;  */
         }
+
+        .file-upload{
+            position: relative;
+            display: inline-block;
+        }
+
+        .only-img-div {
+            position: absolute;
+            bottom: 30px;
+            left: 0px;
+            background-color: rgba(0, 0, 0, 0.75);
+            color: white;
+            font-size: 10px;
+            padding: 3px 6px;
+            font-weight: 100;
+            display: none;
+        }
+
+        .file-upload:hover .only-img-div {
+            display: block;
+        }
+
 
         input{
             flex: 1;
             background-color: rgba(17, 25, 40, 0.5);
             border: none;
-            padding:20px;
+            padding:1rem;
             outline: none;
             border-radius: 10px;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
 
             &:disabled{
                 cursor: not-allowed;
@@ -153,7 +179,7 @@
         button{
             background-color: #5183fe;
             color: white;
-            padding: 10px 20px;
+            padding: 0.6rem 1rem;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -169,9 +195,17 @@
 
             .picker{
                 position: absolute;
-                bottom: 50px;
-                left: 0px;
+                bottom: 30px;
+                right: 0px;
             }
         }
     }
+}
+
+.AI{
+    padding: 0.2rem;
+    background-color: #5183fe;
+    color: black;
+    border-radius: 50%;
+    cursor: pointer;
 }

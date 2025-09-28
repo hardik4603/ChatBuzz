@@ -4,9 +4,10 @@ import { db } from '../../../../lib/firebase';
 import { arrayUnion, collection, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore';
 import { useUserStore } from '../../../../lib/userStore';
 
-const AddUser = () => {
+const AddUser = ({setAdding}) => {
   const [user, setUser] = useState(null);
   const {currentUser} = useUserStore();
+  const [disabledAdd, setDisableAdd] = useState(false);
 
   const handleSearch = async (e) => {
 
@@ -35,6 +36,7 @@ const AddUser = () => {
 
     // Here i am creating a "chats" which is generating the Id, which i am feeding in those userschats who are part of this chat
     // which is currentUser and user. Every ele of chats will be storing chatId, lastMsg, recieverId, updatedAt
+    
 
 
     const chatRef = collection(db, "chats");
@@ -42,6 +44,7 @@ const AddUser = () => {
 
     try{
       const newChatRef = doc(chatRef);
+      setDisableAdd(true);
 
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
@@ -70,6 +73,10 @@ const AddUser = () => {
     catch(err){
       console.log(err);
     }
+    finally{
+      setAdding(false);
+      setDisableAdd(false);
+    }
   }
 
   return (
@@ -77,16 +84,18 @@ const AddUser = () => {
       <form onSubmit={handleSearch}>
         <input type="text" placeholder='Username' name='username' />
         <button>Search</button>
+        <button type="button" className="close" onClick={() => setAdding(false)}> X </button>
       </form>
       {user && <div className="user">
         <div className="detail">
           <img src={user.avatar || "./avatar.png"} />
           <span>{user.username}</span>
         </div>
-        <button onClick={handleAdd}>Add User</button>
+        <button onClick={handleAdd} disabled={disabledAdd}>Add User</button>
       </div>}
     </div>
   )
 }
 
 export default AddUser
+// style={disabledAdd && {cursor:'not-allowed', dis}}

@@ -20,7 +20,16 @@ const ChatList = () => {
   // {chatId, lastMessage, recieverId, updatedAt, user:{avatar, email, blocked, id, username}}
 
   const filteredChats = chats.filter((c)=> c.user.username.toLowerCase().includes(input.toLowerCase()));
+  // if(filteredChats.length===0) setAdding(true);
 
+  useEffect(()=>{
+    if(chats.length === 0){
+      setAdding(true);
+    }
+    else{
+      setAdding(false);
+    }
+  },[chats]);
 
 
 
@@ -96,7 +105,7 @@ const ChatList = () => {
 
       {/* ChatLists */}
       {filteredChats.map((chat) => (
-        <div className="item" key={chat.chatId} onClick={()=>{handleSelect(chat)}} style={{backgroundColor: chat.isSeen? "transparent": "#5183fe"}}>
+        <div className="item" key={chat.chatId} onClick={()=>{handleSelect(chat)}} style={{backgroundColor: chat.isSeen? "transparent": "#5182feb9"}}>
           <img src={chat.user.avatar || "./avatar.png"} alt="chatImg" />
           <div className="texts">
             <span>{chat.user.username}</span>
@@ -105,8 +114,8 @@ const ChatList = () => {
         </div>
       ))}
 
-
-      {adding && <AddUser />}
+      <button className='addNew' onClick={()=> setAdding((prev) => !prev)}>Add New User</button>
+      {adding && <AddUser setAdding={setAdding}/>}
     </div>
   )
 }
