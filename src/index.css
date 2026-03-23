@@ -7,7 +7,8 @@
 }
 
 body {
-  background-image: url('/bg-img8.jpg');
+  /* background-image: url('/bg-img8.jpg'); */
+  background-color: rgba(0, 0, 0, 0.367);
   background-size: contain;
   display: flex;
   justify-content: center;
@@ -17,11 +18,14 @@ body {
 }
 
 .container{
-  height: 94vh;
-  width: 90vw;
+  height: 90vh;
+  width: 85vw;
+
+  /* height: 100vh;
+  width: 100vw; */
   background-color: rgba(17, 25, 40, 0.858);
   backdrop-filter: blur(18px) saturate(180%);
-  border-radius: 12px;
+  /* border-radius: 12px; */
   border: 1px solid rgba(255, 255, 255, 0.124);
   display: flex;
   position: relative;

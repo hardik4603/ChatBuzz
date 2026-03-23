@@ -84,7 +84,7 @@ const AddUser = ({setAdding}) => {
       <form onSubmit={handleSearch}>
         <input type="text" placeholder='Username' name='username' />
         <button>Search</button>
-        <button type="button" className="close" onClick={() => setAdding(false)}> X </button>
+        <span className="close" onClick={() => setAdding(false)}> X </span>
       </form>
       {user && <div className="user">
         <div className="detail">

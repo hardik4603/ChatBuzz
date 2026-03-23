@@ -60,7 +60,6 @@ const ChatList = () => {
       unSub();
     }
   }, [currentUser.id]);
-  // console.log(chats);
 
 
   const handleSelect = async (chat)=>{

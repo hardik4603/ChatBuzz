@@ -121,3 +121,4 @@ const Detail = ({setShowDetail}) => {
 }
 
 export default Detail
+

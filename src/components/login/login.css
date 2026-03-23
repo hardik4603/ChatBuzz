@@ -88,11 +88,11 @@
 
 
                 span{
-                    background-color: #117edd;
-                    color: white;
+                    /* background-color: ; */
+                    color: #1f8ef1;
                     padding: 0.2rem;
                     border-radius: 5px;
-                    font-size: small;
+                    font-size: medium;
                     cursor: pointer;
                 }
             }
